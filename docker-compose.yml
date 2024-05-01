@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  app:
+    container_name: order_microservice
+    build: .
+    ports:
+      - "5005:5005"
+    depends_on:
+      - order_postgres_db
+    env_file:
+      - .env.stage.docker
+
+  order_postgres_db:
+    image: postgres:latest
+    restart: always
+    ports:
+      - "9905:5432"
+    env_file:
+      - .env.stage.docker
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8805:8080
+
+volumes:
+  pg_data:
