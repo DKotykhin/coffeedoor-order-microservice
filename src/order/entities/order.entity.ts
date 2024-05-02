@@ -2,12 +2,15 @@ import { Column, Entity, OneToMany } from 'typeorm';
 
 import { BaseEntity } from '../../database/base.entity';
 import { DeliveryWay, OrderStatus } from '../../database/db.enums';
-import { OrderItem } from './order-item.entity';
+import { OrderItem } from '../../order-item/entities/order-item.entity';
 
 @Entity()
 export class Order extends BaseEntity {
   @Column({ nullable: true })
   userName: string;
+
+  @Column({ nullable: true })
+  userId: string;
 
   @Column({ nullable: true })
   phoneNumber: string;
@@ -34,5 +37,5 @@ export class Order extends BaseEntity {
   totalQuantity: number;
 
   @OneToMany(() => OrderItem, (orderItem) => orderItem.order, { cascade: true })
-  orderItems: OrderItem[];
+  orderItem: OrderItem[];
 }

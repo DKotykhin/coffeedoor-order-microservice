@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package order;
+
+message Order {
+  string id = 1;
+  string userName = 2;
+  string userId = 3;
+  string phoneNumber = 4;
+  string deliveryWay = 5;
+  string deliveryAddress = 6;
+  string orderStatus = 7;
+  string comment = 8;
+  int32 totalSum = 9;
+  int32 averageSum = 10;
+  int32 totalQuantity = 11;
+  string createdAt = 12;
+  string updatedAt = 13;
+  repeated OrderItem orderItem = 14;
+}
+message OrderList {
+  repeated Order orderList = 1;
+}
+
+message OrderItem {
+  string id = 1;
+  string slug = 2;
+  string categoryTitle = 3;
+  string itemTitle = 4;
+  double price = 5;
+  int32 quantity = 6;
+  optional int32 weight = 7;
+}
+
+message UserOrder {
+  string userName = 1;
+  string phoneNumber = 2;
+  optional string userId = 3;
+  optional string deliveryWay = 4;
+  optional string deliveryAddress = 5;
+  optional string comment = 6;
+}
+message UserOrderItem {
+  string slug = 2;
+  string categoryTitle = 3;
+  string itemTitle = 4;
+  double price = 5;
+  int32 quantity = 6;
+  optional int32 weight = 7;
+}
+message CreateOrderRequest {
+  UserOrder userOrder = 1;
+  repeated UserOrderItem orderItems = 2;
+}
+message UpdateOrderRequest {
+  string id = 1;
+  optional string userName = 2;
+  optional string userId = 3;
+  optional string phoneNumber = 4;
+  optional string deliveryWay = 5;
+  optional string deliveryAddress = 6;
+  optional string orderStatus = 7;
+  optional string comment = 8;
+  optional int32 totalSum = 9;
+  optional int32 averageSum = 10;
+  optional int32 totalQuantity = 11;
+}
+
+message Id {
+  string id = 1;
+}
+message StatusResponse {
+  bool status = 1;
+  string message = 2;
+}
+
+service OrderService {
+  rpc GetOrderById(Id) returns (Order);
+  rpc GetOrdersByUserId(Id) returns (OrderList);
+  rpc CreateOrder(CreateOrderRequest) returns (Order);
+  rpc UpdateOrder(UpdateOrderRequest) returns (Order);
+  rpc DeleteOrder(Id) returns (StatusResponse);
+}
+
+// protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./ --ts_proto_opt=nestJs=true ./proto/order.proto

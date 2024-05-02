@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { BaseEntity } from '../../database/base.entity';
-import { Order } from './order.entity';
+import { Order } from '../../order/entities/order.entity';
 
 @Entity()
 export class OrderItem extends BaseEntity {
@@ -23,6 +23,6 @@ export class OrderItem extends BaseEntity {
   @Column({ nullable: true })
   weight: number;
 
-  @ManyToOne(() => Order, (order) => order.orderItems)
+  @ManyToOne(() => Order, (order) => order.orderItem, { onDelete: 'CASCADE' })
   order: Order;
 }

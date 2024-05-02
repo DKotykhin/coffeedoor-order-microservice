@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package orderItem;
+
+message OrderItem {
+  string id = 1;
+  string slug = 2;
+  string categoryTitle = 3;
+  string itemTitle = 4;
+  double price = 5;
+  int32 quantity = 6;
+  int32 weight = 7;
+  string createdAt = 8;
+  string updatedAt = 9;
+  Id order = 10;
+}
+message OrderItemList {
+  repeated OrderItem orderItemList = 1;
+}
+message CreateOrderItemRequest {
+  string slug = 1;
+  string categoryTitle = 2;
+  string itemTitle = 3;
+  double price = 4;
+  int32 quantity = 5;
+  optional int32 weight = 6;
+  Id order = 7;
+}
+message UpdateOrderItemRequest {
+  string id = 1;
+  optional double price = 2;
+  optional int32 quantity = 3;
+  optional int32 weight = 4;
+}
+
+message Id {
+  string id = 1;
+}
+message StatusResponse {
+  bool status = 1;
+  string message = 2;
+}
+
+service OrderItemService {
+  rpc GetOrderItemById(Id) returns (OrderItem) {}
+  rpc GetOrderItemsByOrderId(Id) returns (OrderItemList) {}
+  rpc CreateOrderItem(CreateOrderItemRequest) returns (OrderItem) {}
+  rpc UpdateOrderItem(UpdateOrderItemRequest) returns (OrderItem) {}
+  rpc DeleteOrderItem(Id) returns (StatusResponse) {}
+}
+
+// protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./ --ts_proto_opt=nestJs=true ./proto/order-item.proto
