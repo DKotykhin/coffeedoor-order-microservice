@@ -59,7 +59,7 @@ export class OrderService {
   async createOrder(
     createOrderRequest: CreateOrderRequest,
   ): Promise<OrderType> {
-    const { orderItems } = createOrderRequest;
+    const { orderItems, userOrder } = createOrderRequest;
     try {
       const totalQuantity = orderItems.reduce(
         (acc, item) => acc + item.quantity,
@@ -71,10 +71,11 @@ export class OrderService {
       );
       const averageSum = Math.round(totalSum / totalQuantity);
       const order = await this.orderRepository.save({
-        ...createOrderRequest,
+        ...userOrder,
         averageSum,
         totalSum,
         totalQuantity,
+        deliveryWay: userOrder.deliveryWay as DeliveryWay,
       });
 
       await Promise.all(
