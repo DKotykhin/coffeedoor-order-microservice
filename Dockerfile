@@ -17,5 +17,3 @@ RUN npm run build
 
 # CMD [ "npm", "run", "start:dev" ]
 CMD [ "npm", "start" ]
-
-# npm config set registry https://registry.npmjs.org/
