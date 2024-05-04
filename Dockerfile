@@ -1,19 +1,35 @@
-FROM node:20
+#standalone container
+FROM node:18 as dev
 
-# Create app directory
 WORKDIR /app
 
-# Install app dependencies
 COPY package.json /app
 COPY package-lock.json /app
 
 RUN npm install
 
-# Bundle app source
 COPY . /app
 
-# Build the app
 RUN npm run build
 
 # CMD [ "npm", "run", "start:dev" ]
+CMD [ "npm", "start" ]
+
+
+# common container
+FROM node:18 as prod
+
+WORKDIR /coffeedoor-order-microservice
+
+COPY ./coffeedoor-order-microservice/package.json /coffeedoor-order-microservice
+COPY ./coffeedoor-order-microservice/package-lock.json /coffeedoor-order-microservice
+COPY ./coffeedoor-order-microservice/tsconfig.json tsconfig.json
+COPY ./coffeedoor-order-microservice/nest-cli.json nest-cli.json
+
+RUN npm install
+
+COPY /coffeedoor-order-microservice /coffeedoor-order-microservice
+
+RUN npm run build
+
 CMD [ "npm", "start" ]
