@@ -64,7 +64,8 @@ export class OrderItemService {
       if (!orderItemToUpdate) {
         throw ErrorImplementation.notFound('Order item not found');
       }
-      return await this.orderItemRepository.save(orderItem);
+      Object.assign(orderItemToUpdate, orderItem);
+      return await this.orderItemRepository.save(orderItemToUpdate);
     } catch (error) {
       this.logger.error(error?.message);
       throw ErrorImplementation.forbidden(error?.message);
