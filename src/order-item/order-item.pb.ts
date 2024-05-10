@@ -18,8 +18,6 @@ export interface OrderItem {
   price: number;
   quantity: number;
   weight: number;
-  createdAt: string;
-  updatedAt: string;
   order: Id | undefined;
 }
 

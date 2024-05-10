@@ -10,9 +10,7 @@ message OrderItem {
   double price = 5;
   int32 quantity = 6;
   int32 weight = 7;
-  string createdAt = 8;
-  string updatedAt = 9;
-  Id order = 10;
+  Id order = 8;
 }
 message OrderItemList {
   repeated OrderItem orderItemList = 1;

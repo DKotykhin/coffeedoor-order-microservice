@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { DeliveryWay, OrderStatus } from '../database/db.enums';
+import { DeliveryWay } from '../database/db.enums';
 import { ErrorImplementation } from '../utils/error-implementation';
 import { OrderItemService } from '../order-item/order-item.service';
 import { NotificationService } from '../notification/notification.service';
@@ -13,6 +13,7 @@ import {
   CreateOrderRequest,
   OrderList,
   Order as OrderType,
+  OrderWithItems,
   StatusResponse,
   UpdateOrderRequest,
 } from './order.pb';
@@ -27,7 +28,7 @@ export class OrderService {
   ) {}
   protected readonly logger = new Logger(OrderService.name);
 
-  async findOrderById(id: string): Promise<Order> {
+  async findOrderById(id: string): Promise<OrderWithItems> {
     try {
       const order = await this.orderRepository.findOne({
         where: { id },
@@ -102,11 +103,8 @@ export class OrderService {
       if (!orderToUpdate) {
         throw ErrorImplementation.notFound('Order not found');
       }
-      return this.orderRepository.save({
-        ...order,
-        deliveryWay: order.deliveryWay as DeliveryWay,
-        orderStatus: order.orderStatus as OrderStatus,
-      });
+      Object.assign(orderToUpdate, order);
+      return this.orderRepository.save(orderToUpdate);
     } catch (error) {
       this.logger.error(error?.message);
       throw ErrorImplementation.forbidden(error?.message);

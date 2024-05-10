@@ -16,10 +16,25 @@ message Order {
   int32 totalQuantity = 11;
   string createdAt = 12;
   string updatedAt = 13;
+}
+message OrderWithItems {
+  string id = 1;
+  string userName = 2;
+  string userId = 3;
+  string phoneNumber = 4;
+  string deliveryWay = 5;
+  string deliveryAddress = 6;
+  string orderStatus = 7;
+  string comment = 8;
+  int32 totalSum = 9;
+  int32 averageSum = 10;
+  int32 totalQuantity = 11;
+  string createdAt = 12;
+  string updatedAt = 13;
   repeated OrderItem orderItem = 14;
 }
 message OrderList {
-  repeated Order orderList = 1;
+  repeated OrderWithItems orderList = 1;
 }
 
 message OrderItem {
@@ -29,7 +44,7 @@ message OrderItem {
   string itemTitle = 4;
   double price = 5;
   int32 quantity = 6;
-  optional int32 weight = 7;
+  int32 weight = 7;
 }
 
 message UserOrder {
@@ -75,7 +90,7 @@ message StatusResponse {
 }
 
 service OrderService {
-  rpc GetOrderById(Id) returns (Order);
+  rpc GetOrderById(Id) returns (OrderWithItems);
   rpc GetOrdersByUserId(Id) returns (OrderList);
   rpc CreateOrder(CreateOrderRequest) returns (Order);
   rpc UpdateOrder(UpdateOrderRequest) returns (Order);

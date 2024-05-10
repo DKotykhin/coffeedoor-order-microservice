@@ -8,6 +8,7 @@ import {
   Order,
   OrderList,
   OrderServiceControllerMethods,
+  OrderWithItems,
   StatusResponse,
   UpdateOrderRequest,
 } from './order.pb';
@@ -19,7 +20,7 @@ export class OrderController {
   protected readonly logger = new Logger(OrderController.name);
 
   @GrpcMethod(ORDER_SERVICE_NAME, 'GetOrderById')
-  getOrderById({ id }: { id: string }): Promise<Order> {
+  getOrderById({ id }: { id: string }): Promise<OrderWithItems> {
     this.logger.log('Received GetOrderById request');
     return this.orderService.findOrderById(id);
   }

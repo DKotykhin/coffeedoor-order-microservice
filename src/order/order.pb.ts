@@ -24,11 +24,27 @@ export interface Order {
   totalQuantity: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface OrderWithItems {
+  id: string;
+  userName: string;
+  userId: string;
+  phoneNumber: string;
+  deliveryWay: string;
+  deliveryAddress: string;
+  orderStatus: string;
+  comment: string;
+  totalSum: number;
+  averageSum: number;
+  totalQuantity: number;
+  createdAt: string;
+  updatedAt: string;
   orderItem: OrderItem[];
 }
 
 export interface OrderList {
-  orderList: Order[];
+  orderList: OrderWithItems[];
 }
 
 export interface OrderItem {
@@ -38,7 +54,7 @@ export interface OrderItem {
   itemTitle: string;
   price: number;
   quantity: number;
-  weight?: number | undefined;
+  weight: number;
 }
 
 export interface UserOrder {
@@ -90,7 +106,7 @@ export interface StatusResponse {
 export const ORDER_PACKAGE_NAME = "order";
 
 export interface OrderServiceClient {
-  getOrderById(request: Id): Observable<Order>;
+  getOrderById(request: Id): Observable<OrderWithItems>;
 
   getOrdersByUserId(request: Id): Observable<OrderList>;
 
@@ -102,7 +118,7 @@ export interface OrderServiceClient {
 }
 
 export interface OrderServiceController {
-  getOrderById(request: Id): Promise<Order> | Observable<Order> | Order;
+  getOrderById(request: Id): Promise<OrderWithItems> | Observable<OrderWithItems> | OrderWithItems;
 
   getOrdersByUserId(request: Id): Promise<OrderList> | Observable<OrderList> | OrderList;
 
