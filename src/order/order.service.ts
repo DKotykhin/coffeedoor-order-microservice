@@ -40,7 +40,10 @@ export class OrderService {
       return order;
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden(error?.message);
+      throw new ErrorImplementation({
+        message: error?.message,
+        code: error.error?.code || 13,
+      });
     }
   }
 
@@ -53,7 +56,7 @@ export class OrderService {
       return { orderList };
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden("Couldn't find order");
+      throw ErrorImplementation.notFound("Couldn't find order");
     }
   }
 
@@ -107,7 +110,10 @@ export class OrderService {
       return this.orderRepository.save(orderToUpdate);
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden(error?.message);
+      throw new ErrorImplementation({
+        message: error?.message,
+        code: error.error?.code || 13,
+      });
     }
   }
 
@@ -123,7 +129,10 @@ export class OrderService {
       };
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden(error?.message);
+      throw new ErrorImplementation({
+        message: error?.message,
+        code: error.error?.code || 13,
+      });
     }
   }
 }

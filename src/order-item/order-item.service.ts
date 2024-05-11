@@ -31,7 +31,10 @@ export class OrderItemService {
       return orderItem;
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden(error?.message);
+      throw new ErrorImplementation({
+        message: error?.message,
+        code: error.error?.code || 13,
+      });
     }
   }
 
@@ -43,7 +46,7 @@ export class OrderItemService {
       return { orderItemList };
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden("Couldn't find order items");
+      throw ErrorImplementation.notFound("Couldn't find order items");
     }
   }
 
@@ -68,7 +71,10 @@ export class OrderItemService {
       return await this.orderItemRepository.save(orderItemToUpdate);
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden(error?.message);
+      throw new ErrorImplementation({
+        message: error?.message,
+        code: error.error?.code || 13,
+      });
     }
   }
 
@@ -84,7 +90,10 @@ export class OrderItemService {
       };
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden(error?.message);
+      throw new ErrorImplementation({
+        message: error?.message,
+        code: error.error?.code || 13,
+      });
     }
   }
 }
