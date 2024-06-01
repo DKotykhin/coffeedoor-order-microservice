@@ -1,5 +1,5 @@
 #standalone container
-FROM node:18 as dev
+FROM node:20 as dev
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ CMD [ "npm", "start" ]
 
 
 # common container
-FROM node:18 as prod
+FROM node:20 as prod
 
 WORKDIR /coffeedoor-order-microservice
 

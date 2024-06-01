@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Transport } from '@nestjs/microservices';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 
 import { AppModule } from './app.module';
@@ -12,29 +12,31 @@ import { ORDER_ITEM_PACKAGE_NAME } from './order-item/order-item.pb';
 const logger = new Logger('main.ts');
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe());
-  const configService = app.get(ConfigService);
+  const appContext = await NestFactory.createApplicationContext(AppModule);
+  const configService = appContext.get(ConfigService);
   const PORT = configService.get<string>('TRANSPORT_PORT');
   const HOST = configService.get<string>('TRANSPORT_HOST');
   const URL = `${HOST}:${PORT}`;
-  app.connectMicroservice({
-    transport: Transport.GRPC,
-    options: {
-      package: [
-        HEALTH_CHECK_PACKAGE_NAME,
-        ORDER_ITEM_PACKAGE_NAME,
-        ORDER_PACKAGE_NAME,
-      ],
-      protoPath: [
-        join(__dirname, '../proto/health-check.proto'),
-        join(__dirname, '../proto/order.proto'),
-        join(__dirname, '../proto/order-item.proto'),
-      ],
-      url: URL,
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.GRPC,
+      options: {
+        package: [
+          HEALTH_CHECK_PACKAGE_NAME,
+          ORDER_ITEM_PACKAGE_NAME,
+          ORDER_PACKAGE_NAME,
+        ],
+        protoPath: [
+          join(__dirname, '../proto/health-check.proto'),
+          join(__dirname, '../proto/order.proto'),
+          join(__dirname, '../proto/order-item.proto'),
+        ],
+        url: URL,
+      },
     },
-  });
-  await app.startAllMicroservices();
+  );
+  await app.listen();
   logger.log('Order microservice is running on ' + URL);
 }
 bootstrap();
