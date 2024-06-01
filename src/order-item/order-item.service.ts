@@ -30,9 +30,9 @@ export class OrderItemService {
       }
       return orderItem;
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw new ErrorImplementation({
-        message: error?.message,
+        message: error.message,
         code: error.error?.code || 13,
       });
     }
@@ -45,7 +45,7 @@ export class OrderItemService {
       });
       return { orderItemList };
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw ErrorImplementation.notFound("Couldn't find order items");
     }
   }
@@ -54,7 +54,7 @@ export class OrderItemService {
     try {
       return await this.orderItemRepository.save(orderItem);
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw ErrorImplementation.forbidden("Couldn't create order item");
     }
   }
@@ -70,9 +70,9 @@ export class OrderItemService {
       Object.assign(orderItemToUpdate, orderItem);
       return await this.orderItemRepository.save(orderItemToUpdate);
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw new ErrorImplementation({
-        message: error?.message,
+        message: error.message,
         code: error.error?.code || 13,
       });
     }
@@ -89,9 +89,9 @@ export class OrderItemService {
         message: `Order item ${id} successfully deleted`,
       };
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw new ErrorImplementation({
-        message: error?.message,
+        message: error.message,
         code: error.error?.code || 13,
       });
     }

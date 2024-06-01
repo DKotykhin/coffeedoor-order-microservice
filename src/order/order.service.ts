@@ -39,9 +39,9 @@ export class OrderService {
       }
       return order;
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw new ErrorImplementation({
-        message: error?.message,
+        message: error.message,
         code: error.error?.code || 13,
       });
     }
@@ -55,7 +55,7 @@ export class OrderService {
       });
       return { orderList };
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw ErrorImplementation.notFound("Couldn't find order");
     }
   }
@@ -93,7 +93,7 @@ export class OrderService {
 
       return order;
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw ErrorImplementation.forbidden("Couldn't create order");
     }
   }
@@ -109,9 +109,9 @@ export class OrderService {
       Object.assign(orderToUpdate, order);
       return this.orderRepository.save(orderToUpdate);
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw new ErrorImplementation({
-        message: error?.message,
+        message: error.message,
         code: error.error?.code || 13,
       });
     }
@@ -128,9 +128,9 @@ export class OrderService {
         message: `Order ${id} successfully deleted`,
       };
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw new ErrorImplementation({
-        message: error?.message,
+        message: error.message,
         code: error.error?.code || 13,
       });
     }

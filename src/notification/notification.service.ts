@@ -54,7 +54,7 @@ export class NotificationService {
         })
         .pipe(
           catchError((error: AxiosError) => {
-            this.logger.error(error?.message);
+            this.logger.error(error.message);
             throw ErrorImplementation.badRequest(
               "Couldn't send message to telegram",
             );
